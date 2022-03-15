@@ -21,14 +21,14 @@ clean:
 run: $(iso)
 	@qemu-system-x86_64 -cdrom $(iso)
 
-iso: $(iso)
+# iso: $(iso)
 
-$(iso): $(kernel) $(grub_cfg)
-	@mkdir -p maked/isofiles/boot/grub
-	@cp $(kernel) maked/isofiles/boot/kernel.bin
-	@cp $(grub_cfg) maked/isofiles/boot/grub
-	@grub-mkrescue -o $(iso) maked/isofiles 2> /dev/null
-	@rm -r maked/isofiles
+# $(iso): $(kernel) $(grub_cfg)
+# 	@mkdir -p maked/isofiles/boot/grub
+# 	@cp $(kernel) maked/isofiles/boot/kernel.bin
+# 	@cp $(grub_cfg) maked/isofiles/boot/grub
+# 	@grub-mkrescue -o $(iso) maked/isofiles 2> /dev/null
+# 	@rm -r maked/isofiles
 
 $(kernel): $(assembly_object_files) $(linker_script)
 	@ld -n -T $(linker_script) -o $(kernel) $(assembly_object_files) maked/arch/x86_64/main.o
