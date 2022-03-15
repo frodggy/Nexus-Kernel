@@ -6,6 +6,7 @@ namespace nxt::apps {
     void Terminal() {
         while (true) {
             nxt::io::print_str("iso@core \\> ");
+            nxt::io::start_input()
         }
     }
 }

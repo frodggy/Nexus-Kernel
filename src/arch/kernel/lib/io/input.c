@@ -43,7 +43,7 @@ namespace nxt::io {
     wait_for_io(timer_count);
     }
 
-    void test_input()
+    void start_input()
     {
     char ch = 0;
     char keycode = 0;
