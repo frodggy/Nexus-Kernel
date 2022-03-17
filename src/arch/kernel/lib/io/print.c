@@ -2,18 +2,17 @@
 #include "../std/types.c"
 
 
-namespace nxt::io {
-    const static size_t NUM_COLS = 80;
-    const static size_t NUM_ROWS = 25;
+    static sint NUM_COLS = 80;
+    static sint NUM_ROWS = 25;
 
     struct Char {
-        uint8_t character;
-        uint8_t color;
+        uint character;
+        uint color;
     };
 
-    struct Char* buffer = (struct Char*) 0xb8000;
-    size_t col = 0;
-    size_t row = 0;
+    struct Char* Nbuffer = (struct Char*) 0xb8000;
+    sint col = 0;
+    sint row = 0;
     uint8_t color = PRINT_COLOR_WHITE | PRINT_COLOR_BLACK << 4;
 
     void clear_row(size_t row) {
@@ -23,7 +22,7 @@ namespace nxt::io {
         };
 
         for (size_t col = 0; col < NUM_COLS; col++) {
-            buffer[col + NUM_COLS * row] = empty;
+            Nbuffer[col + NUM_COLS * row] = empty;
         }
     }
 
@@ -43,8 +42,8 @@ namespace nxt::io {
 
         for (size_t row = 1; row < NUM_ROWS; row++) {
             for (size_t col = 0; col < NUM_COLS; col++) {
-                struct Char character = buffer[col + NUM_COLS * row];
-                buffer[col + NUM_COLS * (row - 1)] = character;
+                struct Char character = Nbuffer[col + NUM_COLS * row];
+                Nbuffer[col + NUM_COLS * (row - 1)] = character;
             }
         }
 
@@ -61,7 +60,7 @@ namespace nxt::io {
             print_newline();
         }
 
-        buffer[col + NUM_COLS * row] = (struct Char) {
+        Nbuffer[col + NUM_COLS * row] = (struct Char) {
             character: (uint8_t) character,
             color: color,
         };
@@ -69,7 +68,7 @@ namespace nxt::io {
         col++;
     }
 
-    void print_str(nxt::string str) {
+    void print_str(string str) {
         for (size_t i = 0; 1; i++) {
             char character = (uint8_t) str[i];
 
@@ -84,4 +83,3 @@ namespace nxt::io {
     void print_set_color(uint8_t foreground, uint8_t background) {
         color = foreground + (background << 4);
     }
-}
