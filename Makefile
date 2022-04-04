@@ -1,14 +1,14 @@
 version = 0.0.1
-code = cool
-name = youros
+code = vultr
+name = Nexus
 arch ?= x86_64
 kernel := maked/vmnxtz-$(version)
 iso := maked/$(name)-$(code)@$(version)-$(arch).iso
 
-linker_script := src/arch/$(arch)/linker.ld
-grub_cfg := src/arch/$(arch)/grub.cfg
-assembly_source_files := $(wildcard src/arch/$(arch)/*.asm)
-assembly_object_files := $(patsubst src/arch/$(arch)/%.asm, \
+linker_script := src/arch/kernel/$(arch)/linker.ld
+grub_cfg := src/arch/kernel/$(arch)/grub.cfg
+assembly_source_files := $(wildcard src/arch/kernel/$(arch)/*.asm)
+assembly_object_files := $(patsubst src/arch/kernel/$(arch)/%.asm, \
 	maked/arch/$(arch)/%.o, $(assembly_source_files))
 
 .PHONY: all clean run iso
@@ -34,7 +34,7 @@ $(kernel): $(assembly_object_files) $(linker_script)
 	@ld -n -T $(linker_script) -o $(kernel) $(assembly_object_files) maked/arch/x86_64/main.o
 
 # compile assembly files
-maked/arch/$(arch)/%.o: src/arch/$(arch)/%.asm
+maked/arch/$(arch)/%.o: src/arch/kernel/$(arch)/%.asm
 	@mkdir -p $(shell dirname $@)
 	@gcc src/arch/kernel/main.c -Wall -march=x86-64 -ffreestanding -c -nostartfiles -Wimplicit-function-declaration -o maked/arch/x86_64/main.o
 	@nasm -felf64 $< -o $@
